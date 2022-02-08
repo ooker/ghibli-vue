@@ -5,31 +5,34 @@ import {ref} from "vue";
 import HelloWorld from './components/HelloWorld.vue'
 import FilmCard from './components/FilmCard.vue'
 
+
 const filmsData = ref(null);
 
 fetch('https://ghibliapi.herokuapp.com/films')
   .then(response => response.json())
     .then(data => filmsData.value = data)
-
-//          .catch(console.error);
+      .catch(console.error);
 
 </script>
 
 
 <template>
   
+  <main class="films">
 
+    <nav class="films-list">
+      <film-card v-for="(film, i) in filmsData" :key="'film'+i"
+    :filmTitle="film.title" :imageSrc="film.movie_banner" />
+    </nav>
 
-  <div v-for="(film, i) in filmsData" :key="'film'+i">
-    <h2> {{ film.title }} </h2>
-    <img :src="film.movie_banner" />
-  </div>
+    <section class="film-info">
 
-  <FilmCard filmTitle="Mina olen film card" />
+    </section>
+  </main>
 
-  <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
   
-  <HelloWorld msg="See on minu message"  />
+
+
 
 </template>
 
@@ -44,4 +47,12 @@ fetch('https://ghibliapi.herokuapp.com/films')
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.films{
+  display: flex;
+}
+.films-list{
+  flex: 0 0 30%;
+}
+
 </style>

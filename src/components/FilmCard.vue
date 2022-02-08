@@ -1,21 +1,29 @@
 <script setup>
-import { ref } from 'vue'
+
 defineProps({
   filmTitle: String,
-  filmImage: String,
-})
-const count = ref(0)
+  imageSrc: String
+});
+
 </script>
 
 <template>
-    <div>
-      <h2>{{filmTitle}}</h2>
-      <img :src="filmImage" />
-    </div>
+  <div class="film-card">
+    <h3>{{ filmTitle }}</h3>
+    <img :src="imageSrc" class="film-image" />
+  </div>
 </template>
 
-<style scoped>
-a {
-  color: #42b983;
+<style>
+
+  .film-card {
+    padding: 1rem;
+    box-shadow: 0 0.25rem 0.5rem hsla(0 0% 0% / 0.25);
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+.film-image{
+  width: 100%;
 }
 </style>
