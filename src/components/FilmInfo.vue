@@ -26,7 +26,7 @@
         <img :src="filmImage" class="film-info__image" />
         
         <div class="film-info__info">
-            <h2>{{filmTitle}} {{filmYear}}</h2>
+            <h2>{{filmTitle}} <span class="film-info__year">{{filmYear}}</span></h2>
             <p class="film-info__director">{{filmDirector}}</p>
             <p>{{filmDescription}}</p>
         </div>
@@ -51,5 +51,10 @@
 .film-info__director{
     font-style: italic;
 }
-
+.film-info__year {
+    font-size: 65%;
+    font-weight: normal;
+    vertical-align: super;
+    font-style: italic;
+}
 </style>
