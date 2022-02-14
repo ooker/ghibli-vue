@@ -31,7 +31,8 @@ const filmCardClick = (i) => {
       <film-card v-for="(film, i) in filmsData" :key="'film'+i"
         :filmTitle="film.title" 
         :imageSrc="film.movie_banner" 
-        @click="filmCardClick(i)" />
+        @click="filmCardClick(i)"
+     />
     
     </nav>
 
@@ -47,7 +48,9 @@ const filmCardClick = (i) => {
         :filmYear="filmsData[activeFilm].release_date"
         :filmDirector="filmsData[activeFilm].director"
       />
-      <!-- <div v-else>Loading...</div> -->
+      <!-- 
+        <div v-else>Loading...</div> 
+      -->
 
     </section>
   </main>
@@ -78,6 +81,15 @@ body{
 .films-list{
   flex: 0 0 30%;
   padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
 }
+
+@media (min-width: 1024px) {
+  .films-list{
+    grid-template-columns: 1fr 1fr;
+  }
+} 
 
 </style>
