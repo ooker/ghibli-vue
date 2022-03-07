@@ -1,7 +1,7 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import {ref} from "vue";
+import {ref, computed} from "vue";
 import FilmCard from './components/FilmCard.vue';
 import FilmInfo from './components/FilmInfo.vue';
 
@@ -19,6 +19,21 @@ const filmCardClick = (i) => {
   activeFilm.value = i;
 }
 
+const sortType = ref("title");
+
+const sortedData = computed(() => {
+  switch (sortType.value){
+    case "year":
+      return [...filmsData.value].sort( (a, b) => {
+        return a.release_date.localeCompare(b.release_date);
+      });
+    case "title":
+      return [...filmsData.value].sort( (a, b) => {
+        return a.title.localeCompare(b.title);
+    });
+  } 
+});
+
 </script>
 
 
@@ -28,7 +43,7 @@ const filmCardClick = (i) => {
 
     <nav class="films-list">
       
-      <film-card v-for="(film, i) in filmsData" :key="'film'+i"
+      <film-card v-for="(film, i) in sortedData" :key="'film'+i"
         :filmTitle="film.title" 
         :imageSrc="film.movie_banner" 
         @click="filmCardClick(i)"
@@ -41,12 +56,12 @@ const filmCardClick = (i) => {
       <!-- <film-info v-if="filmsData"
         :filmData="filmsData[activeFilm]"
       /> -->
-      <film-info v-if="filmsData"
-        :filmTitle="filmsData[activeFilm].title"
-        :filmImage="filmsData[activeFilm].image"
-        :filmDescription="filmsData[activeFilm].description"
-        :filmYear="filmsData[activeFilm].release_date"
-        :filmDirector="filmsData[activeFilm].director"
+      <film-info v-if="sortedData"
+        :filmTitle="sortedData[activeFilm].title"
+        :filmImage="sortedData[activeFilm].image"
+        :filmDescription="sortedData[activeFilm].description"
+        :filmYear="sortedData[activeFilm].release_date"
+        :filmDirector="sortedData[activeFilm].director"
       />
       <!-- 
         <div v-else>Loading...</div> 
