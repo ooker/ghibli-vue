@@ -1,25 +1,27 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import {ref, computed} from "vue";
+import {ref, provide, computed} from "vue";
 import FilmCard from './components/FilmCard.vue';
 import FilmInfo from './components/FilmInfo.vue';
+import FilmFilter from './components/FilmFilter.vue';
 
 const filmsData = ref(null);
 const activeFilm = ref(0);
-
+const sortType = ref("null");
 
 fetch('https://ghibliapi.herokuapp.com/films')
   .then(response => response.json())
-    .then(data => filmsData.value = data)
-      .catch(console.error);
+    .then(data => {
+      filmsData.value = data;
+      sortType.value = "title";
+    })
+    .catch(console.error);
 
 
 const filmCardClick = (i) => {
   activeFilm.value = i;
 }
-
-const sortType = ref("title");
 
 const sortedData = computed(() => {
   switch (sortType.value){
@@ -34,6 +36,9 @@ const sortedData = computed(() => {
   } 
 });
 
+provide("sortType", sortType);
+provide("activeFilm", activeFilm);
+
 </script>
 
 
@@ -43,6 +48,8 @@ const sortedData = computed(() => {
 
     <nav class="films-list">
       
+      <film-filter />
+
       <film-card v-for="(film, i) in sortedData" :key="'film'+i"
         :filmTitle="film.title" 
         :imageSrc="film.movie_banner" 
