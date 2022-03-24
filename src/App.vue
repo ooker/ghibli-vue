@@ -1,6 +1,5 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+
 import {ref, provide, computed} from "vue";
 import FilmCard from './components/FilmCard.vue';
 import FilmInfo from './components/FilmInfo.vue';
@@ -8,7 +7,7 @@ import FilmFilter from './components/FilmFilter.vue';
 
 const filmsData = ref(null);
 const activeFilm = ref(0);
-const sortType = ref("null");
+const sortType = ref("");
 
 fetch('https://ghibliapi.herokuapp.com/films')
   .then(response => response.json())
@@ -24,16 +23,11 @@ const filmCardClick = (i) => {
 }
 
 const sortedData = computed(() => {
-  switch (sortType.value){
-    case "year":
-      return [...filmsData.value].sort( (a, b) => {
-        return a.release_date.localeCompare(b.release_date);
-      });
-    case "title":
-      return [...filmsData.value].sort( (a, b) => {
-        return a.title.localeCompare(b.title);
+  if(filmsData.value){
+    return [...filmsData.value].sort( (a, b) => {
+      return a.release_date.localeCompare(b[sortType.value]);
     });
-  } 
+  }
 });
 
 provide("sortType", sortType);
@@ -59,28 +53,16 @@ provide("activeFilm", activeFilm);
     </nav>
 
     <section>
-
-      <!-- <film-info v-if="filmsData"
-        :filmData="filmsData[activeFilm]"
-      /> -->
       <film-info v-if="sortedData"
         :filmTitle="sortedData[activeFilm].title"
+        :filmTime="sortedData[activeFilm].running_time"
         :filmImage="sortedData[activeFilm].image"
         :filmDescription="sortedData[activeFilm].description"
         :filmYear="sortedData[activeFilm].release_date"
         :filmDirector="sortedData[activeFilm].director"
       />
-      <!-- 
-        <div v-else>Loading...</div> 
-      -->
-
     </section>
   </main>
-
-  
-
-
-
 </template>
 
 
